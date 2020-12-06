@@ -1,0 +1,960 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"math",
+				"math.random\t([m [, n]])"
+			],
+			[
+				"add-",
+				"add-registers"
+			],
+			[
+				"read",
+				"read-int"
+			],
+			[
+				"print",
+				"print-str"
+			],
+			[
+				"sub",
+				"subroutines"
+			],
+			[
+				"border-s",
+				"border-style\tproperty"
+			],
+			[
+				"bord",
+				"border-width\tproperty"
+			],
+			[
+				"pad",
+				"padding-bottom\tproperty"
+			],
+			[
+				"paddin",
+				"padding-top\tproperty"
+			],
+			[
+				"grid-t",
+				"grid-template-columns\tproperty"
+			],
+			[
+				"font",
+				"font-size\tproperty"
+			],
+			[
+				"grid",
+				"grid-template-columns\tproperty"
+			],
+			[
+				"align",
+				"align-self\tproperty"
+			],
+			[
+				"background",
+				"background-color\tproperty"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "main.py",
+			"settings":
+			{
+				"buffer_size": 712,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "model/memory.py",
+			"settings":
+			{
+				"buffer_size": 205,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "controller/temp.py",
+			"settings":
+			{
+				"buffer_size": 221,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "view/mainwindow.py",
+			"settings":
+			{
+				"buffer_size": 3114,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "view/zoomcanvas.py",
+			"settings":
+			{
+				"buffer_size": 5345,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"contents": "import sys\n\nfrom PySide2.QtCore import QObject, Signal\nfrom PySide2.QtGui import QFont\nfrom PySide2.QtWidgets import QApplication, QPushButton\n\nclass someClass(QObject):\n    class commu(QObject):\n        someSignal = Signal()\n\n    def __init__(self):\n        super(someClass, self).__init__()\n        \n        cm = self.commu()\n        self.someSignal = cm.someSignal\n        cm.someSignal.connect(self.print_msg)\n        try:\n            cm.someSignal.emit()\n        except Exception as e:\n            print(\"__init__:\")\n            print(e)\n\t\t\t\n    def print_msg(self):\n        print(\"lalalu\")\n\t\t\t\n\nif __name__ == \"__main__\":\n    app = QApplication(sys.argv)\n\t\t\n    sc = someClass()\n    button = QPushButton(text=\"Press me if you want to close the server\")\n    button.resize(640, 480)    \n    button.setFont(QFont(\"Arial\", 20, QFont.Bold))\n    button.clicked.connect(button.close)\n    button.show()\n\n    sys.exit(app.exec_())",
+			"settings":
+			{
+				"buffer_size": 927,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "Packages/User/User - Python run folder main.py.sublime-build",
+	"build_system_choices":
+	[
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/C++/C++ Single File.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					""
+				],
+				[
+					"Packages/C++/C++ Single File.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/User/User - C++ with Terminus.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - C++ with Terminus.sublime-build",
+					"Run"
+				]
+			],
+			[
+				"Packages/User/User - C++ with Terminus.sublime-build",
+				"Run"
+			]
+		],
+		[
+			[
+				[
+					"Packages/Java/Ant.sublime-build",
+					""
+				],
+				[
+					"Packages/Java/JavaC.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Java/JavaC.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Java/Ant.sublime-build",
+					""
+				],
+				[
+					"Packages/Java/JavaC.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Java Compile and Execute.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Java/JavaC.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Java/Ant.sublime-build",
+					""
+				],
+				[
+					"Packages/Java/JavaC.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Java Compile and Execute.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Java with Terminus.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/User - Java with Terminus.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Lua/Lua.sublime-build",
+					""
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					""
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"Run"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"Love2D"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"ldoc: File"
+				],
+				[
+					"Packages/Lua Love/LuaLove.sublime-build",
+					"ldoc: Project"
+				],
+				[
+					"Packages/User/User - Love2D Project.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Lua Love/LuaLove.sublime-build",
+				"Love2D"
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/User/User - Python in Project main.py.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Python with project_env.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Python with Terminus.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/User - Python in Project main.py.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/User/User - Python run folder main.py.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Python with project_env.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Python with Terminus.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/User/User - Python run folder main.py.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/User/User - Python with project_env.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		],
+		[
+			[
+				[
+					"Packages/Python/Python.sublime-build",
+					""
+				],
+				[
+					"Packages/Python/Python.sublime-build",
+					"Syntax Check"
+				],
+				[
+					"Packages/User/User - Python with project_env.sublime-build",
+					""
+				],
+				[
+					"Packages/User/User - Python with Terminus.sublime-build",
+					""
+				]
+			],
+			[
+				"Packages/Python/Python.sublime-build",
+				""
+			]
+		]
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"rename",
+				"Rename File"
+			],
+			[
+				"view pack",
+				"View Package File"
+			],
+			[
+				"ren",
+				"Rename File"
+			],
+			[
+				"renam",
+				"Rename File"
+			],
+			[
+				"re",
+				"Rename File"
+			],
+			[
+				"Snippet: ",
+				"Snippet: method"
+			],
+			[
+				"package file",
+				"View Package File"
+			],
+			[
+				"Package Control: ",
+				"Package Control: Remove Package"
+			],
+			[
+				"rena",
+				"Rename File"
+			],
+			[
+				"Snippet: main",
+				"Snippet: method (main)"
+			],
+			[
+				"view",
+				"View Package File"
+			],
+			[
+				"view p",
+				"View Package File"
+			],
+			[
+				"Package Control: instal",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 136.0,
+		"history":
+		[
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/D/Programming/photo-viewer",
+		"/D/Programming/photo-viewer/view"
+	],
+	"file_history":
+	[
+		"/D/Programming/photo-viewer/view/zoomcanvas.py",
+		"/C/Users/James/AppData/Local/Programs/Python/Python39/Lib/site-packages/PySide2/glue/qtcore.cpp",
+		"/D/Programming/photo-viewer/view/imagelabel.py",
+		"/D/Programming/perspective tool 2/controller/image_io.py",
+		"/D/Programming/perspective tool 2/controller/transform.py",
+		"/D/Programming/perspective tool 2/model/WorkingMemory.py",
+		"/D/Programming/perspective tool 2/lib/ImageQt.py",
+		"/C/Users/James/AppData/Local/Programs/Python/Python39/Lib/site-packages/PIL/_util.py",
+		"/C/Users/James/AppData/Local/Programs/Python/Python39/Lib/site-packages/PIL/ImageQt.py",
+		"/D/Programming/rectangle-packing/packer.py",
+		"/D/Programming/perspective tool 2/testingapp.py",
+		"/D/Programming/perspective tool 2/view/display.py",
+		"/D/Programming/perspective tool 2/model/Pic.py",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/User - Python run folder main.py.sublime-build",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/User - Python in Project main.py.sublime-build",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/Python/Python.sublime-build",
+		"/D/Programming/perspective tool 2/temp.py",
+		"/D/Programming/pyqt-learning/03 mvc/dasdsa.py",
+		"/D/Programming/pyqt-learning/02 custom widget/power_bar.py",
+		"/D/Programming/pyqt-learning/02 custom widget/custom01.py",
+		"/D/Programming/pyqt-learning/signals01.py",
+		"/D/Programming/pyqt-learning/paint2.py",
+		"/D/Programming/pyqt-learning/00 basics/MyApp_083.py",
+		"/D/Programming/mooc-java-tutorial-2/03 arrays, arraylists/arraylist7.java",
+		"/D/Programming/mooc-java-tutorial-2/03 arrays, arraylists/arraylist2.java",
+		"/D/Programming/mooc-java-tutorial-2/03 arrays, arraylists/program.java",
+		"/D/Programming/mooc-java-tutorial-2/03 arrays, arraylists/array1.java",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Java Scanner newLine Integer.sublime-snippet",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Java valueOf Double.sublime-snippet",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/Python/Snippets/New-Class.sublime-snippet",
+		"/D/Programming/pyqt-learning/widget-testing.py",
+		"/D/Programming/pyqt-learning/painter.py",
+		"/D/Documents/UK Resume CV/qmul qtemps personal statement.md",
+		"/D/Documents/UK Jobs QTemps/basic infomation.md",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/assessed8.java",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/template2.java",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/miniproj7 todo.md",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/miniproj7.java",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/polish notation examples.md",
+		"/D/QMUL Material/ECS401U Procedural Programming/Unit 9 - Recursion, Divide and Conquer, Binary Search/Programs/parsingcalculator_formatted.java",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/io_test.java",
+		"/D/Programming/mooc-java-tutorial-2/03 arrays, arraylists/secondplusthird.java",
+		"/D/QMUL Material/ECS401U Procedural Programming/Unit 12 - Further Challenges, Going Deeper/Programs/rectest.java",
+		"/D/QMUL Material/ECS401U Procedural Programming/Unit 12 - Further Challenges, Going Deeper/Programs/studentconstructor.java",
+		"/D/QMUL Material/ECS401U Procedural Programming/Unit 11 - Files and Character Representations/Programs/readhello.java",
+		"/D/QMUL Material/ECS401U Procedural Programming/Unit 11 - Files and Character Representations/Programs/savehello.java",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/User - C++ with Terminus.sublime-build",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/User - Java with Terminus.sublime-build",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/User - Love2D with Terminus.sublime-build.old",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/User - Python with Terminus.sublime-build",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/sorting.java",
+		"/D/Programming/love2d-stuff/sonic-physics-2/checklist.md",
+		"/E/Sync/visa records/applying info.md",
+		"/D/Programming/perspective tool/main.py",
+		"/D/Programming/pyqt-learning/MainWindow.py",
+		"/D/Programming/pyqt-learning/MyApp_083.py",
+		"/D/Programming/pyqt-learning/tab-testing.py",
+		"/D/Programming/mips-cheater/main.py",
+		"/D/Programming/recursive.py",
+		"/D/Programming/pyqt-learning/qlabel.py",
+		"/D/Programming/mooc-java-tutorial-2/factorial.java",
+		"/D/Programming/mooc-java-tutorial-2/inputpositive.java",
+		"/D/Programming/mooc-java-tutorial-2/input4.java",
+		"/D/Programming/mooc-java-tutorial-2/password.java",
+		"/D/Programming/mooc-java-tutorial-2/scanner.java",
+		"/D/Programming/mooc-java-tutorial-2/Sandbox.java",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Java Scanner newLine Double.sublime-snippet",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Java Scanner Import.sublime-snippet",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Java Scanner New.sublime-snippet",
+		"/E/_Old PC/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Python Comment Separator.sublime-snippet",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Java Scanner newLine.sublime-snippet",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/Java/Snippets/java_math.sublime-snippet",
+		"/E/_Old PC/Users/James/AppData/Roaming/Sublime Text 3/Packages/User/Snippet - Lua Comment Separator.sublime-snippet",
+		"/D/QMUL Notes/ECS404U Computer Systems and Networks/MIPS lab/cw-q1.py",
+		"/D/QMUL Notes/ECS404U Computer Systems and Networks/MIPS lab/default-template.markdwon",
+		"/D/Programming/accelerated-c++/test2.cpp",
+		"/D/Programming/accelerated-c++/string-input.cpp",
+		"/D/Unity Projects/Testing Crack/Assets/Scripts/PlayerMovement.cs",
+		"/D/Programming/mooc-java-tutorial-2/aaa.txt",
+		"/D/Programming/mips-cheater/test-scripts/simple-test.py",
+		"/D/Programming/mips-cheater/test.py",
+		"/D/QMUL Material/ECS404U Computer Systems and Networks/Week 10/week10_array_example.asm",
+		"/D/QMUL Notes/ECS407U Logic and Discrete Structures/w9 notes.md",
+		"/D/Programming/qmul-401-exit-test/exittest.java",
+		"/D/Programming/youtube-dl liked videos/liked-dl.py",
+		"/D/QMUL Notes/css/github-pandoc-custom.css",
+		"/D/Programming/Downloaded/Craft/src/world.c",
+		"/D/Programming/Downloaded/Craft/src/cube.c",
+		"/D/Programming/Jupyter Notebooks/Sympy Notebook.ipynb",
+		"/D/Programming/Unicode/ReadyPlayerX.py",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Nightmares Collection 7ce71d315f034d269828c1094a1e72b7/Alternate Hong Kong Family 9129f59a3e5a4a68af934f41b8bc47b3.md",
+		"/D/QMUL Notes/ECS401U Procedural Programming/EXIT TEST/arrays vs records.md",
+		"/D/Programming/qmul-401-exit-test/test19.java",
+		"/D/Programming/qmul-401-exit-test/temp.java",
+		"/D/Programming/qmul-401-exit-test/template.java",
+		"/D/Programming/qmul-401-exit-test/test18.java",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Programs to save data a7d1007ed2eb41179828b0fa0ae14725.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Task List 3c77a3416d114ba48dd36592eb3426ec/Remake Bluecoin Transactions fc23f5da124e445691810f939b7f0059.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Task List 3c77a3416d114ba48dd36592eb3426ec/Register with police d0b53d5b27284ed6ba65773aa2750939.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Task List 3c77a3416d114ba48dd36592eb3426ec/New Task 8d36f8b5e7d54f3993753de94e2ca2b3.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Task List 3c77a3416d114ba48dd36592eb3426ec/Fix contacts 3e75bc4401be44a1b00593cc996651e5.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Task List 3c77a3416d114ba48dd36592eb3426ec/Finish university enrolment fa3c06262cd64a93ae51b5b5e8ebe676.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/UK Numbers and Details 63d3ae66884448b0b757e260613cd9f8.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/What to do 154f9eeb68974014b3a1bee9568fdcb3.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Job Hunting and CV Writing 3b670f5f43fc43eabc7e48912e03737d.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/University Resources e0088aca2f4746a8a166347f7e193209.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/British citizenship or bust ea85a559783245ea9a5d3c0010d82e09.md",
+		"/D/Notable/Export-3c904d88-f76f-4b57-a959-b6f20d1e844e/Ask a lawyer a0eb11658f0547cdab77eea30261e17a.md",
+		"/C/Users/James/AppData/Local/SumatraPDF/SumatraPDF-settings.txt",
+		"/D/Personal/sublime text settings backup/User - C with Terminus.sublime-build",
+		"/C/Users/James/AppData/Roaming/Sublime Text 3/Packages/C++/C++ Single File.sublime-build",
+		"/D/Programming/accelerated-c++/exercises/0-8.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-9.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-10.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-7.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-6.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-4.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-5.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-3.cpp",
+		"/D/Programming/accelerated-c++/exercises/0-2.cpp",
+		"/D/Programming/accelerated-c++/test.cpp",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/assessed7.java",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/miniproj4.java",
+		"/E/Torrents/Adobe Acrobat Reader DC v2020.009.20065 RePack by KpoJIuK/INSTALL.cmd",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/miniproj4.class",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/template.java",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/assessed6.java",
+		"/D/QMUL Notes/ECS401U Procedural Programming/assessed ex/assessed5.java"
+	],
+	"find":
+	{
+		"height": 38.0
+	},
+	"find_in_files":
+	{
+		"height": 106.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"emit",
+			"Signal",
+			"getScrollPosition",
+			"setScrollPosition",
+			"zoomReset",
+			"toggleZoomFit",
+			"zoomFitSize",
+			"zoomFitSize()",
+			"zoomFitSize",
+			"zoomFitSize(",
+			"zoom(",
+			"memory",
+			"qsizeResize",
+			"self.content",
+			"label",
+			"resizeLabelToZoomLevel",
+			"openImage",
+			"self.label",
+			"imageViewer",
+			"ImageViewer",
+			"resizeLabelToZoomLevel("
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "main.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 712,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								375,
+								319
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "python"
+							},
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "model/memory.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 205,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								59,
+								59
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 0,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "python"
+							},
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "controller/temp.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 221,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								221,
+								217
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 0,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "python"
+							},
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "view/mainwindow.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 3114,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								540,
+								540
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "python"
+							},
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 336.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "view/zoomcanvas.py",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5345,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3338,
+								3338
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": -1,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "python"
+							},
+							"syntax": "Packages/Python/Python.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 944.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 927,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								195,
+								195
+							]
+						],
+						"settings":
+						{
+							"WordCount":
+							{
+								"changes": 0,
+								"count": 0,
+								"modified": true,
+								"selection": true,
+								"status": -1,
+								"syntax": "python"
+							},
+							"syntax": "Packages/Python/Python.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 25.0
+	},
+	"input":
+	{
+		"height": 0.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.Terminus Build Results":
+	{
+		"height": 167.0
+	},
+	"output.exec":
+	{
+		"height": 122.0
+	},
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "photo-viewer.sublime-project",
+	"replace":
+	{
+		"height": 46.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 398.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 600.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 150.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
