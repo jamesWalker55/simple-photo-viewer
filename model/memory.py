@@ -28,7 +28,6 @@ class MainMemory:
 	@property
 	def image(self):
 		return self._image
-
 	@image.setter
 	def image(self, path):
 		self._image = path

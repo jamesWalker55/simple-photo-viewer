@@ -8,9 +8,11 @@ from PySide2.QtWidgets import QApplication
 
 import view.mainwindow 
 from controller.io import *
+from controller.controller import *
 import model.memory
 
 memory = model.memory.MainMemory()
+controller = Controller(memory)
 
 app = QApplication(sys.argv)
 mw = view.mainwindow.MainWindow(memory)
