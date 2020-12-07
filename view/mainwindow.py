@@ -22,11 +22,11 @@ class MainWindow(QMainWindow):
 		self.controller = controller
 		self.signals = controller.signals
 
+		self.loadSettings()
+
 		# Setup signals before label and zoom are created
 		self.setupSignals()
 		self.setupToolBar()
-
-		self.loadSettings()
 
 		# create imagelabel
 		self.imagelabel = ImageLabel()
@@ -34,8 +34,6 @@ class MainWindow(QMainWindow):
 		# create zoom canvas
 		self.zoom = ZoomCanvas(self.imagelabel, self.controller)
 		self.setCentralWidget(self.zoom)
-
-
 
 	def setupToolBar(self):
 		self.toolbar = QToolBar("Main Toolbar")
@@ -73,7 +71,7 @@ class MainWindow(QMainWindow):
 			self.act_sort[sort] = QAction(QIcon(fr"./res/sortIcons/{sort}.png"),f"&Sort by {sort}", self)
 			self.act_sort[sort].setStatusTip(f"Sorts filelist by {sort}")
 			self.act_sort[sort].triggered.connect(
-					lambda _="fuck",a=sort: self.controller.setFolderSort(a)
+					lambda _=None,a=sort: self.changeSortMethod(a)
 					)
 			# self.act_sort.append(self.act_sort[sort])
 			self.sort_menu.addAction(self.act_sort[sort])
@@ -89,22 +87,35 @@ class MainWindow(QMainWindow):
 		self.act_reverseSort.setStatusTip("Reverse the currently used image list")
 		self.act_reverseSort.setCheckable(True)
 		self.act_reverseSort.triggered.connect( 
-				lambda s: self.controller.setFolderSort(
-					self.controller.getFolderSort()[0],
-					not self.controller.getFolderSort()[1]) 
+				lambda s: self.changeSortReverse(s) 
 				)
 		self.act_reverseSort.setChecked(self.controller.getFolderSort()[1] or False)
 		self.toolbar.addAction(self.act_reverseSort)
 
+	def changeSortMethod(self, sort):
+		self.controller.setFolderSort(sort)
+		self.signals.updateTitle.signal.emit(True)
+
+	def changeSortReverse(self, reverse):
+		sort = self.controller.getFolderSort()[0]
+		print(reverse)
+		self.controller.setFolderSort(sort, reverse)
+		self.signals.updateTitle.signal.emit(True)
+
 	def setupSignals(self):
-		self.signals.updateTitleSignal = BoolSignal()
-		self.signals.updateTitleSignal.signal.connect(
+		self.signals.updateTitle = BoolSignal()
+		self.signals.updateTitle.signal.connect(
 			lambda e: self.updateWindowTitle()
 		)
 
-		self.signals.fitImageSignal = BoolSignal()
-		self.signals.fitImageSignal.signal.connect(
-			lambda b: self.act_fitWindow.setChecked(b)
+		self.signals.buttonFitImage = BoolSignal()
+		self.signals.buttonFitImage.signal.connect(
+			lambda e: self.act_fitWindow.setChecked(e)
+		)
+
+		self.signals.setFitImage = BoolSignal()
+		self.signals.setFitImage.signal.connect(
+			lambda e: self.act_fitWindow.setChecked(e)
 		)
 
 	# Opens a "open file" dialog, then passes on to self.openImage
@@ -114,10 +125,11 @@ class MainWindow(QMainWindow):
 		# "Open file" dialog
 		filetypeList = " ".join(self.controller.supportedFileTypes())
 		fname, _ = QFileDialog.getOpenFileName(
-												self, 
-												'Open file', 
-												str(self.controller.getLastOpenFolder()),
-												f"Image Files ({filetypeList})")
+			self, 
+			'Open file', 
+			str(self.controller.getLastOpenFolder()),
+			f"Image Files ({filetypeList})"
+		)
 		if not fname:  # if no file is opened
 			print("openImageDialog: Nothing opened.")
 			return
@@ -142,22 +154,24 @@ class MainWindow(QMainWindow):
 		# load image from memory
 		self.openImage(self.controller.imagePath())
 
-	# The actual code for loading an image
+	# The actual code for loading a new image
 	def openImage(self, path):
 		# Reload image label image
 		self.imagelabel.setImage(path)
 		# Set new window title
 		self.updateWindowTitle()
-		self.zoom.zoomFitSize()
 		self.saveSettings()
+		self.signals.buttonFitImage.signal.emit(True)
 
-	def fitImage(self, s):
-		print(f"Toolbar: Fit image to view, state={s}")
-		self.zoom.toggleZoomFit()
-		if self.zoom.fitImage:
-			self.act_fitWindow.setChecked(True)
-		elif not self.zoom.fitImage:
-			self.act_fitWindow.setChecked(False)
+	# Pass in true / false to set state
+	# Called only when button is pressed
+	def fitImage(self, checked):
+		print(f"Toolbar: Fit image to view, state={checked}")
+		# print(checked)
+		if checked:
+			self.signals.buttonFitImage.signal.emit(True)
+		else:
+			self.signals.buttonFitImage.signal.emit(False)
 
 	# Updates title to match viewer information
 	# path must be a Path object

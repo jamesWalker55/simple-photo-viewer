@@ -29,9 +29,11 @@ class ZoomCanvas(QScrollArea):
 		self.controller = controller
 		self.signals = controller.signals
 
+		self.setupSignals()
+
 		self.zoomLevel = 1.0
 		self.drag = None
-		self.setFitImage(True)
+		self.fitImage = True
 
 		self.setBackgroundRole(QPalette.Dark)
 
@@ -41,14 +43,33 @@ class ZoomCanvas(QScrollArea):
 		self.content = content
 		self.setWidget(self.content)
 
-	# ===================== Zoom Functions =====================
-	# zoom according to some factor
-	# Also adjusts scroll position
-	def zoom(self, factor):
-		self.setFitImage(False)
+		self.buttonFitImage(True)
 
+	def setupSignals(self):
+		# This is triggered on pressing button and opening image only
+		# zooming by scroll does NOT trigger this
+		self.signals.buttonFitImage.signal.connect(
+			lambda e: self.buttonFitImage(e)
+		)
+		self.signals.setFitImage.signal.connect(
+			lambda e: self.setFitImage(e)
+		)
+
+	def setFitImage(self, state):
+		print(f"FitImage set to {state}")
+		self.fitImage = state
+
+	# ===================== Zoom Functions =====================
+	# Zooming with mouse wheel
+	# Unrelated to fitImage
+	# Also adjusts scroll position
+	def scrollZoom(self, factor):
+		print("zooming by scrolling")
+		if self.fitImage:
+			self.signals.setFitImage.signal.emit(False)
+
+		# don't do anything if mouse is dragging
 		if self.drag:
-			# don't do anything if mouse is dragging
 			return
 
 		# constants for calculating scroll position after zoom
@@ -73,10 +94,11 @@ class ZoomCanvas(QScrollArea):
 			mx = ix*realFactor - ex + 1
 			my = iy*realFactor - ey + 1
 			self.setScrollPosition(mx, my)
-		
+	
+	# constantly called on window resize AND when fitimage is true
+	# resizes image to window
 	def zoomFitSize(self):
-		if not self.fitImage:
-			self.setFitImage(True)
+		print("fitting image to window")
 		img_size = self.content.originalSize
 		window_size = self.size() - QSize(2,2)
 
@@ -96,30 +118,32 @@ class ZoomCanvas(QScrollArea):
 				self.zoomLevel = window_size.height() / img_size.height()
 			self.resizeContentToZoomLevel()
 
-	def toggleZoomFit(self):
-		self.setFitImage(not self.fitImage)
-		if self.fitImage:
-			self.zoomFitSize()
-		else:
-			self.zoomReset()
-
-
 	# Resets zoom level to 1
 	def zoomReset(self):
+		print("setting zoom to 1")
 		if self.zoomLevel != 1:
 			self.zoomLevel = 1.0
-		self.resizeContentToZoomLevel()
+			self.resizeContentToZoomLevel()
 
-	# sets zoom level to a value
+	# resizes content to zoom level
 	def resizeContentToZoomLevel(self):
+		# print("resizeContentToZoomLevel called")
 		dimension = self.zoomLevel * self.content.originalSize
 		self.content.qsizeResize(dimension)
-		self.signals.updateTitleSignal.signal.emit(True)
 
-	def setFitImage(self, state):
+	# Called when button is pressed
+	def buttonFitImage(self, state):
 		assert type(state) == bool
-		self.fitImage = state
-		self.signals.fitImageSignal.signal.emit(state)
+
+		# This is just `self.fitImage = state`
+		self.signals.setFitImage.signal.emit(state)
+
+		if self.fitImage:
+			self.zoomFitSize()
+			print("buttonFitImage: Fit to window")
+		else:
+			self.zoomReset()
+			print("buttonFitImage: Set zoom to 1")
 
 	# ===================== Useful Functions =====================
 	def setScrollPosition(self, x, y):
@@ -137,9 +161,9 @@ class ZoomCanvas(QScrollArea):
 		# Define scroll action to zoom
 		scrollDelta = e.angleDelta().y()
 		if scrollDelta>0:
-			self.zoom(1.25)
+			self.scrollZoom(1.25)
 		elif scrollDelta<0:
-			self.zoom(0.8)
+			self.scrollZoom(0.8)
 
 	# ===================== Panning =====================
 	def mousePressEvent(self, e):
@@ -185,9 +209,9 @@ class ZoomCanvas(QScrollArea):
 	# Define shortcuts
 	def keyPressEvent(self, e):
 		if e.key() == Qt.Key_E:
-			self.zoomReset()
-		if e.key() == Qt.Key_Q:
-			self.toggleZoomFit()
+			print(self.fitImage)
+		# if e.key() == Qt.Key_Q:
+		# 	self.toggleZoomFit()
 
 		super(ZoomCanvas, self).keyPressEvent(e)
 
