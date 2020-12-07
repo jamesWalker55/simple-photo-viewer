@@ -1,13 +1,10 @@
 # So far I only did the model and controller
 # I didn't touch the view AT ALL. It's incompatible with the current code
 
-from pathlib import Path
-
 import sys
 from PySide2.QtWidgets import QApplication
 
 import view.mainwindow 
-from controller.io import *
 from controller.controller import *
 import model.memory
 
