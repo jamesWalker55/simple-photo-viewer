@@ -94,6 +94,8 @@ class ZoomCanvas(QScrollArea):
 			mx = ix*realFactor - ex + 1
 			my = iy*realFactor - ey + 1
 			self.setScrollPosition(mx, my)
+
+		self.signals.updateTitle.signal.emit(True)
 	
 	# constantly called on window resize AND when fitimage is true
 	# resizes image to window

@@ -194,13 +194,6 @@ class MainWindow(QMainWindow):
 			self.nextImage(-1)
 		if e.key() == Qt.Key_Period:
 			self.nextImage(1)
-		# if e.key() == Qt.Key_Left:
-		# 	self.nextImage(-1)
-		# if e.key() == Qt.Key_Right:
-		# 	self.nextImage(1)
-		# if e.key() == Qt.Key_A:
-		# 	print(self.memory.image)
-		# 	print(self.memory.lastOpenFolder)
 		super(MainWindow, self).keyPressEvent(e)
 
 	# ===================== Save settings =====================
@@ -211,7 +204,7 @@ class MainWindow(QMainWindow):
 		self.controller.setLastOpenFolder( Path(lastPath) )
 
 		sort = self.settings.value("memory/sort")
-		sortReverse = bool(self.settings.value("memory/sortReverse"))
+		sortReverse = self.settings.value("memory/sortReverse") == "true"
 		self.controller.setFolderSort(sort, sortReverse)
 
 	def closeEvent(self, e):
@@ -231,6 +224,7 @@ class MainWindow(QMainWindow):
 			str(self.controller.getFolderSort()[0]))
 		save("memory/sortReverse", 
 			self.controller.getFolderSort()[1])
+		print(self.controller.getFolderSort()[1])
 		
 		# self.settings.setValue("geometry", self.saveGeometry() )
 		# self.settings.setValue("windowState", self.saveState() )
