@@ -1,4 +1,5 @@
 import os
+from random import shuffle
 
 def imageOpen(memory, path):
 	# You only need to define image path and sort
@@ -7,6 +8,9 @@ def imageOpen(memory, path):
 		print(path)
 		raise FileNotFoundError("File path is invalid.")
 	memory.image = path
+	if memory.tempimagelist:
+		if memory.tempimagelist[1].parent == memory.folder:
+			return
 	createTempImageList(memory)
 
 # Go to next or previous image
@@ -33,6 +37,11 @@ def createTempImageList(memory):
 		sortfunct = os.path.getmtime
 	elif memory.sort == "size":
 		sortfunct = os.path.getsize
+	elif memory.sort == "random":
+		paths = list(memory.imagelist)
+		shuffle(paths)
+		memory.tempimagelist = paths
+		return
 	else:
 		# uses name sort by default
 		print("createTempImageList: memory.sort is invalid! Defaulting to name.")

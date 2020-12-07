@@ -18,7 +18,7 @@ class MainWindow(QMainWindow):
 		self.settings = QSettings("James", "Photo Viewer")
 		# self.resize(800, 600)
 		self.memory = memory
-		self.readSettings()
+		self.loadSettings()
 
 		self.imagelabel = ImageLabel()
 
@@ -56,6 +56,24 @@ class MainWindow(QMainWindow):
 		self.act_fitWindow.setChecked(True)
 		self.act_fitWindow.triggered.connect( lambda s: self.fitImage(s) )
 		self.toolbar.addAction(self.act_fitWindow)
+
+		self.act_sort = []
+		self.sort_menu = QMenu()
+		for sort in ("name", "cdate", "mdate", "size", "random"):
+			action = QAction(QIcon(fr"./res/sortIcons/{sort}.png"),f"&Sort by {sort}", self)
+			action.setStatusTip(f"Sorts filelist by {sort}")
+			action.triggered.connect( lambda _="fuck",a=sort: self.setSort(a) )
+			self.act_sort.append(action)
+			self.sort_menu.addAction(action)
+
+		self.act_sortListTool = QToolButton()
+		self.act_sortListTool.setMenu(self.sort_menu)
+		self.act_sortListTool.setPopupMode(QToolButton.MenuButtonPopup)
+		self.act_sortListTool.triggered.connect(self.act_sortListTool.setDefaultAction)
+		self.act_sortListTool.setDefaultAction(self.act_sort[0])
+		self.toolbar.addWidget(self.act_sortListTool)
+
+
 
 	def openImage(self, s):
 		print("Toolbar: Open image")
@@ -96,6 +114,12 @@ class MainWindow(QMainWindow):
 		elif not self.zoom.fitImage:
 			self.act_fitWindow.setChecked(False)
 
+	def setSort(self, sort):
+		print(f"setSort: Set sort mode to \"{sort}\"")
+		self.memory.sort = sort
+		if self.memory.image:
+			controller.io.createTempImageList(self.memory)
+
 	def setFitWindowState(self, boolean):
 		self.act_fitWindow.setChecked(boolean)
 
@@ -119,7 +143,7 @@ class MainWindow(QMainWindow):
 		super(MainWindow, self).keyPressEvent(e)
 
 	# ===================== Save settings =====================
-	def readSettings(self):
+	def loadSettings(self):
 		self.restoreGeometry(self.settings.value("geometry"))
 		self.restoreState(self.settings.value("windowState"))
 		lastPath = self.settings.value("memory/lastOpenFolder")
