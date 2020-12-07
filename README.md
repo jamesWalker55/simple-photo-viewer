@@ -9,3 +9,9 @@ A very simple photo viewer made in PySide2 / Qt. Made as my first Qt project.
 Just run main.py. Working directory must be root of folder.
 
 Requires: PySide2, PIL
+
+## Controls
+
+- Zooming in/out: Scroll wheel
+- Panning: Middle mouse drag
+- Next/Previous image: ,/. (comma and period)
