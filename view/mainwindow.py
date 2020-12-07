@@ -175,8 +175,10 @@ class MainWindow(QMainWindow):
 		# print(checked)
 		if checked:
 			self.signals.buttonFitImage.signal.emit(True)
+			self.signals.updateTitle.signal.emit(True)
 		else:
 			self.signals.buttonFitImage.signal.emit(False)
+			self.signals.updateTitle.signal.emit(True)
 
 	# Updates title to match viewer information
 	# path must be a Path object
