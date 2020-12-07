@@ -38,10 +38,10 @@ class PILLabel(QLabel):
 		# Resize image
 		if zoomlevel >= 1:
 			# zoom in
-			resampleMode = Image.LANCZOS
+			resampleMode = Image.NEAREST
 		elif zoomlevel < 1:
 			# zoom out
-			resampleMode = Image.LANCZOS
+			resampleMode = Image.BILINEAR
 		tempImage = self.image.resize(qsize.toTuple(), resample=resampleMode)
 		self.setPILImage(tempImage)
 		# Resize label
