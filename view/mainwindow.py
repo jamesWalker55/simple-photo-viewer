@@ -34,6 +34,7 @@ class MainWindow(QMainWindow):
 
 	def setupToolBar(self):
 		self.toolbar = QToolBar("Main Toolbar")
+		self.toolbar.setObjectName("Main Toolbar")
 		self.setBackgroundRole(QPalette.Base)
 		self.toolbar.setIconSize(QSize(16,16))
 		self.addToolBar(self.toolbar)
