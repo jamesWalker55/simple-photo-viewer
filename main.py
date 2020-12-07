@@ -5,11 +5,11 @@ import sys
 from PySide2.QtWidgets import QApplication
 
 import view.mainwindow 
-from controller.controller import *
+import controller.controller 
 import model.memory
 
 memory = model.memory.MainMemory()
-controller = Controller(memory)
+controller = controller.controller.Controller(memory)
 
 app = QApplication(sys.argv)
 mw = view.mainwindow.MainWindow(controller)

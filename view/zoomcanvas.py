@@ -14,6 +14,9 @@
 # - self.content.mapFromGlobal
 #     - converts global to local point (all widgets should have this already)
 
+# - self.content.setImage *
+#     - This is handled by mainwindow, but still required nonetheless
+
 from PySide2.QtWidgets import QScrollArea, QLabel
 from PySide2.QtCore import QPointF, QSize, Signal, QObject
 from PySide2.QtGui import QPalette, Qt, QPixmap, QCursor,QImage
@@ -131,7 +134,7 @@ class ZoomCanvas(QScrollArea):
 	def resizeContentToZoomLevel(self):
 		# print("resizeContentToZoomLevel called")
 		dimension = self.zoomLevel * self.content.originalSize
-		self.content.qsizeResize(dimension)
+		self.content.qsizeResize(dimension, self.zoomLevel)
 
 	# Called when button is pressed
 	def buttonFitImage(self, state):

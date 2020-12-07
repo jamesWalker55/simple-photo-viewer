@@ -1,11 +1,15 @@
-from PySide2.QtWidgets import *
+# from PySide2.QtCore import QSettings, QSize
+# from PySide2.QtGui import QPalette, QIcon
+# from PySide2.QtWidgets import QMainWindow, QAction, QToolBar, QMenu, QToolButton, QFileDialog
 from PySide2.QtCore import *
 from PySide2.QtGui import *
+from PySide2.QtWidgets import *
 
 import sys
 from pathlib import Path
 
-from view.imagelabel import ImageLabel
+# from view.imagelabel import ImageLabel
+from view.pillabel import PILLabel
 from view.zoomcanvas import ZoomCanvas
 
 # To create new signals
@@ -29,10 +33,10 @@ class MainWindow(QMainWindow):
 		self.setupToolBar()
 
 		# create imagelabel
-		self.imagelabel = ImageLabel()
+		self.content = PILLabel()
 
 		# create zoom canvas
-		self.zoom = ZoomCanvas(self.imagelabel, self.controller)
+		self.zoom = ZoomCanvas(self.content, self.controller)
 		self.setCentralWidget(self.zoom)
 
 	def setupToolBar(self):
@@ -157,11 +161,12 @@ class MainWindow(QMainWindow):
 	# The actual code for loading a new image
 	def openImage(self, path):
 		# Reload image label image
-		self.imagelabel.setImage(path)
+		self.content.setImage(path)
 		# Set new window title
 		self.updateWindowTitle()
 		self.saveSettings()
 		self.signals.buttonFitImage.signal.emit(True)
+		self.signals.updateTitle.signal.emit(True)
 
 	# Pass in true / false to set state
 	# Called only when button is pressed
@@ -184,7 +189,7 @@ class MainWindow(QMainWindow):
 		zoomlevel = self.zoom.zoomLevel
 		listlength = len(self.controller.getTempImageList())
 		listindex = self.controller.getImageIndex() + 1
-		titleString = f"Photo Viewer - [{listindex}/{listlength}] {path.name} ({zoomlevel:.2f}x)"
+		titleString = f"Photo Viewer - [{listindex}/{listlength}] ({zoomlevel:.2f}x) {path.name}"
 		self.setWindowTitle(titleString)
 
 	def keyPressEvent(self, e):
