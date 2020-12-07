@@ -15,6 +15,6 @@ memory = model.memory.MainMemory()
 controller = Controller(memory)
 
 app = QApplication(sys.argv)
-mw = view.mainwindow.MainWindow(memory)
+mw = view.mainwindow.MainWindow(controller)
 mw.show()
 sys.exit(app.exec_())

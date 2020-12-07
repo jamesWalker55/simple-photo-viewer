@@ -8,6 +8,7 @@ class MainMemory:
 		# Allowed state: True, False
 		self.sortReverse = False
 		self.tempimagelist = None
+		# For storing location of the "file open" dialog
 		self.lastOpenFolder = None
 		self.filetypes = ("*.png", "*.jpg", "*.jpeg", "*.gif", "*.bmp")
 

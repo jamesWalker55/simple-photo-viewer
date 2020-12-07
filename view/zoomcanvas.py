@@ -28,7 +28,6 @@ class SignalFix(QObject):
 	signal = Signal(bool)
 
 class ZoomCanvas(QScrollArea):
-	"""docstring for ZoomCanvas"""
 	def __init__(self, content, *args, **kwargs):
 		super(ZoomCanvas, self).__init__(*args, **kwargs)
 

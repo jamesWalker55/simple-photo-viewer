@@ -30,19 +30,29 @@ class Controller:
 		imglist = self.memory.tempimagelist
 		currentIndex = imglist.index(self.memory.image)
 		newIndex = (currentIndex+index) % len(imglist)
-		imageOpen(self.memory, imglist[newIndex])
+		self.imageOpen(imglist[newIndex])
+
+	# Returns path to image
+	# Can convert to str automatically
+	def imagePath(self, ty=None):
+		if ty==str:
+			return str(self.memory.image)
+		else:
+			return self.memory.image
 
 	# ===================== SORT =====================
 	# Sets memory's sort settings
-	def setFolderSort(self, sort, reverse=False):
+	def setFolderSort(self, sort, reverse=None):
 		# Allowed sorts: name, cdate, mdate, size, 
 		self.memory.sort = sort
-		self.memory.sortReverse = reverse
-		createTempImageList()
+		if reverse != None:
+			self.memory.sortReverse = reverse
+		if self.imagePath():
+			self.createTempImageList()
 
 	# Gets memory's sort settings
 	def getFolderSort(self):
-		return self.memory.sort , self.memory.sortReverse
+		return (self.memory.sort , self.memory.sortReverse)
 
 	# ===================== IMAGE LIST =====================
 	# Creates a temp image list from memory.imagelist
@@ -76,3 +86,25 @@ class Controller:
 				key=sortfunct, 
 				reverse=self.memory.sortReverse
 				)
+
+	def getTempImageList(self):
+		return self.memory.tempimagelist
+
+	# Returns index of current image in list
+	def getImageIndex(self):
+		return self.getTempImageList().index(self.imagePath())
+
+	# ===================== file types =====================
+	# Return list of accepted filetypes
+	def supportedFileTypes(self):
+		return self.memory.filetypes
+
+	# ===================== "file open" dialog =====================
+	def getLastOpenFolder(self, ty=None):
+		if ty==str:
+			return str(self.memory.lastOpenFolder)
+		else:
+			return self.memory.lastOpenFolder
+
+	def setLastOpenFolder(self, path):
+		self.memory.lastOpenFolder = path

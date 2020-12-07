@@ -7,17 +7,16 @@ from pathlib import Path
 
 from view.imagelabel import ImageLabel
 from view.zoomcanvas import ZoomCanvas
-import controller.io
 
 class MainWindow(QMainWindow):
 	"""docstring for MainWindow"""
-	def __init__(self, memory, *args, **kwargs):
+	def __init__(self, controller, *args, **kwargs):
 		super(MainWindow, self).__init__(*args, **kwargs)
 		self.setWindowIcon(QIcon("./res/photo-album.ico"))
 		self.setWindowTitle("Photo Viewer")
 		self.settings = QSettings("James", "Photo Viewer")
 		# self.resize(800, 600)
-		self.memory = memory
+		self.controller = controller
 		self.loadSettings()
 
 		self.imagelabel = ImageLabel()
@@ -26,8 +25,12 @@ class MainWindow(QMainWindow):
 		self.setCentralWidget(self.zoom)
 		self.setupToolBar()
 
-		self.zoom.fitImageSignal.signal.connect(self.setFitWindowState)
-		self.zoom.updateTitleSignal.signal.connect(lambda e: self.setTitleToPath(self.memory.image))
+		# self.zoom.fitImageSignal.signal.connect(self.setFitWindowState)
+		self.zoom.fitImageSignal.signal.connect(
+			lambda b: self.act_fitWindow.setChecked(b)
+			)
+
+		self.zoom.updateTitleSignal.signal.connect(lambda e: self.updateWindowTitle())
 
 	def setupToolBar(self):
 		self.toolbar = QToolBar("Main Toolbar")
@@ -38,7 +41,7 @@ class MainWindow(QMainWindow):
 
 		self.act_open = QAction(QIcon(r"./res/folder-open-image.png"),"&Open image", self)
 		self.act_open.setStatusTip("Open an image")
-		self.act_open.triggered.connect( self.openImage )
+		self.act_open.triggered.connect( self.openImageDialog )
 		self.toolbar.addAction(self.act_open)
 
 		self.act_prev = QAction(QIcon(r"./res/arrow-180.png"),"&Previous image", self)
@@ -63,7 +66,9 @@ class MainWindow(QMainWindow):
 		for sort in ("name", "cdate", "mdate", "size", "random"):
 			self.act_sort[sort] = QAction(QIcon(fr"./res/sortIcons/{sort}.png"),f"&Sort by {sort}", self)
 			self.act_sort[sort].setStatusTip(f"Sorts filelist by {sort}")
-			self.act_sort[sort].triggered.connect( lambda _="fuck",a=sort: self.setSort(a) )
+			self.act_sort[sort].triggered.connect(
+					lambda _="fuck",a=sort: self.controller.setFolderSort(a)
+					)
 			# self.act_sort.append(self.act_sort[sort])
 			self.sort_menu.addAction(self.act_sort[sort])
 
@@ -71,45 +76,61 @@ class MainWindow(QMainWindow):
 		self.act_sortListTool.setMenu(self.sort_menu)
 		self.act_sortListTool.setPopupMode(QToolButton.MenuButtonPopup)
 		self.act_sortListTool.triggered.connect(self.act_sortListTool.setDefaultAction)
-		self.act_sortListTool.setDefaultAction(self.act_sort[self.memory.sort])
+		self.act_sortListTool.setDefaultAction(self.act_sort[self.controller.getFolderSort()[0]])
 		self.toolbar.addWidget(self.act_sortListTool)
 
 		self.act_reverseSort = QAction(QIcon(r"./res/book-open-previous.png"),"&Reverse image list", self)
 		self.act_reverseSort.setStatusTip("Reverse the currently used image list")
 		self.act_reverseSort.setCheckable(True)
-		self.act_reverseSort.triggered.connect( lambda s: self.setSortReverse() )
-		self.act_reverseSort.setChecked(self.memory.sortReverse or False)
+		self.act_reverseSort.triggered.connect( 
+				lambda s: self.controller.setFolderSort(
+					self.controller.getFolderSort()[0],
+					not self.controller.getFolderSort()[1]) 
+				)
+		self.act_reverseSort.setChecked(self.controller.getFolderSort()[1] or False)
 		self.toolbar.addAction(self.act_reverseSort)
 
-
-	def openImage(self, s):
+	# Opens a "open file" dialog, then passes on to self.openImage
+	def openImageDialog(self, s):
 		print("Toolbar: Open image")
-		filetypeList = " ".join(self.memory.filetypes)
+
+		# "Open file" dialog
+		filetypeList = " ".join(self.controller.supportedFileTypes())
 		fname, _ = QFileDialog.getOpenFileName(
-			self, 
-			'Open file', 
-			str(self.memory.lastOpenFolder),
-			f"Image Files ({filetypeList})")
-		if not fname:
-			print("openImage: Nothing opened.")
+												self, 
+												'Open file', 
+												str(self.controller.getLastOpenFolder()),
+												f"Image Files ({filetypeList})")
+		if not fname:  # if no file is opened
+			print("openImageDialog: Nothing opened.")
 			return
-		pathedFname = Path(fname)
-		self.memory.lastOpenFolder = pathedFname.parent
-		controller.io.imageOpen(self.memory, pathedFname)
-		self.imagelabel.setImage(self.memory.image)
-		self.setTitleToPath(self.memory.image)
-		self.zoom.zoomFitSize()
-		self.saveSettings()
+
+		# Set "lastOpenFolder" to the parent of file
+		pathFname = Path(fname)
+		self.controller.setLastOpenFolder(pathFname.parent)
+
+		# Set image to image in memory
+		self.controller.imageOpen(pathFname)
+		# load image from memory
+		self.openImage(self.controller.imagePath())
 
 	def nextImage(self, index):
 		print(f"Toolbar: Go next {index} image")
-		print(self.memory.image)
-		if not self.memory.image:
+		if not self.controller.imagePath():
 			print("nextImage: No image in memory, skipping.")
 			return
-		controller.io.imageNext(self.memory, index)
-		self.imagelabel.setImage(self.memory.image)
-		self.setTitleToPath(self.memory.image)
+
+		# move to next image in memory
+		self.controller.imageNext(index)
+		# load image from memory
+		self.openImage(self.controller.imagePath())
+
+	# The actual code for loading an image
+	def openImage(self, path):
+		# Reload image label image
+		self.imagelabel.setImage(path)
+		# Set new window title
+		self.updateWindowTitle()
 		self.zoom.zoomFitSize()
 		self.saveSettings()
 
@@ -121,29 +142,35 @@ class MainWindow(QMainWindow):
 		elif not self.zoom.fitImage:
 			self.act_fitWindow.setChecked(False)
 
-	def setSort(self, sort):
-		print(f"setSort: Set sort mode to \"{sort}\"")
-		self.memory.sort = sort
-		if self.memory.image:
-			controller.io.createTempImageList(self.memory)
+	# Useless, replaced with controller.setFolderSort
+	# def setSort(self, sort, reverse=False):
+	# 	print(f"setSort: Set sort mode to \"{sort}\"")
+	# 	self.memory.sort = sort
+	# 	if self.memory.image:
+	# 		controller.io.createTempImageList(self.memory)
 
-	def setSortReverse(self):
-		self.memory.sortReverse = not self.memory.sortReverse
-		self.zoom.updateTitleSignal.signal.emit(True)
+	# Useless, replaced with controller.setFolderSort
+	# def setSortReverse(self):
+	# 	self.memory.sortReverse = not self.memory.sortReverse
+	# 	self.zoom.updateTitleSignal.signal.emit(True)
 
+	# Replaced with act_fitWindow.setChecked
+	# def setFitWindowState(self, boolean):
+	# 	self.act_fitWindow.setChecked(boolean)
 
-	def setFitWindowState(self, boolean):
-		self.act_fitWindow.setChecked(boolean)
-
-	def setTitleToPath(self, path):
+	# Updates title to match viewer information
+	# path must be a Path object
+	def updateWindowTitle(self):
+		path = self.controller.imagePath()
 		if not path:
 			self.setWindowTitle(f"Photo Viewer")
 			return
 		filename = path.name
 		zoomlevel = self.zoom.zoomLevel
-		listlength = len(self.memory.tempimagelist)
-		listindex = self.memory.tempimagelist.index(self.memory.image)+1
-		self.setWindowTitle(f"Photo Viewer - [{listindex}/{listlength}] {path.name} ({zoomlevel:.2f}x)")
+		listlength = len(self.controller.getTempImageList())
+		listindex = self.controller.getImageIndex() + 1
+		titleString = f"Photo Viewer - [{listindex}/{listlength}] {path.name} ({zoomlevel:.2f}x)"
+		self.setWindowTitle(titleString)
 
 	def keyPressEvent(self, e):
 		if e.key() == Qt.Key_Escape:
@@ -156,9 +183,9 @@ class MainWindow(QMainWindow):
 		# 	self.nextImage(-1)
 		# if e.key() == Qt.Key_Right:
 		# 	self.nextImage(1)
-		if e.key() == Qt.Key_A:
-			print(self.memory.image)
-			print(self.memory.lastOpenFolder)
+		# if e.key() == Qt.Key_A:
+		# 	print(self.memory.image)
+		# 	print(self.memory.lastOpenFolder)
 		super(MainWindow, self).keyPressEvent(e)
 
 	# ===================== Save settings =====================
@@ -166,17 +193,32 @@ class MainWindow(QMainWindow):
 		self.restoreGeometry(self.settings.value("geometry"))
 		self.restoreState(self.settings.value("windowState"))
 		lastPath = self.settings.value("memory/lastOpenFolder")
-		self.memory.lastOpenFolder = Path(lastPath)
-		self.memory.sort = self.settings.value("memory/sort")
-		self.memory.sortReverse = bool(self.settings.value("memory/sortReverse"))
+		self.controller.setLastOpenFolder( Path(lastPath) )
+
+		sort = self.settings.value("memory/sort")
+		sortReverse = bool(self.settings.value("memory/sortReverse"))
+		self.controller.setFolderSort(sort, sortReverse)
 
 	def closeEvent(self, e):
 		self.saveSettings()
 		super().closeEvent(e)
 
 	def saveSettings(self):
-		self.settings.setValue("geometry", self.saveGeometry() )
-		self.settings.setValue("windowState", self.saveState() )
-		self.settings.setValue("memory/lastOpenFolder", str(self.memory.lastOpenFolder))
-		self.settings.setValue("memory/sort", str(self.memory.sort))
-		self.settings.setValue("memory/sortReverse", self.memory.sortReverse)
+		save = lambda name, value: self.settings.setValue(name, value)
+		
+		save("geometry", 
+			self.saveGeometry() )
+		save("windowState", 
+			self.saveState() )
+		save("memory/lastOpenFolder", 
+			str( self.controller.getLastOpenFolder() ))
+		save("memory/sort", 
+			str(self.controller.getFolderSort()[0]))
+		save("memory/sortReverse", 
+			self.controller.getFolderSort()[1])
+		
+		# self.settings.setValue("geometry", self.saveGeometry() )
+		# self.settings.setValue("windowState", self.saveState() )
+		# self.settings.setValue("memory/lastOpenFolder", str(self.memory.lastOpenFolder))
+		# self.settings.setValue("memory/sort", str(self.memory.sort))
+		# self.settings.setValue("memory/sortReverse", self.memory.sortReverse)
