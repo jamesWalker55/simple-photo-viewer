@@ -83,10 +83,10 @@ class ZoomCanvas(QScrollArea):
 
 		# Zoom in label
 		self.zoomLevel *= factor
-		if self.zoomLevel > 3:
-			self.zoomLevel = 3
-		elif self.zoomLevel < 1/3:
-			self.zoomLevel = 1/3
+		if self.zoomLevel > 3.0517578125:
+			self.zoomLevel = 3.0517578125
+		elif self.zoomLevel < 0.32768:
+			self.zoomLevel = 0.32768
 		self.resizeContentToZoomLevel()
 
 		# Calculate actual factor used
@@ -122,6 +122,8 @@ class ZoomCanvas(QScrollArea):
 				# img wider than window
 				self.zoomLevel = window_size.height() / img_size.height()
 			self.resizeContentToZoomLevel()
+			
+		self.signals.updateTitle.signal.emit(True)
 
 	# Resets zoom level to 1
 	def zoomReset(self):
