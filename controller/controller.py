@@ -1,10 +1,15 @@
 import os
 from random import shuffle
 
+class SignalsContainer:
+	# Allows using dot notation to store signals
+	pass
+
 class Controller:
 
 	def __init__(self, memory):
 		self.memory = memory
+		self.signals = SignalsContainer()
 
 	# ===================== IMAGE =====================
 	# Sets memory's image to the given path

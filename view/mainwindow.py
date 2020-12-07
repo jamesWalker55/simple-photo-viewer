@@ -8,6 +8,9 @@ from pathlib import Path
 from view.imagelabel import ImageLabel
 from view.zoomcanvas import ZoomCanvas
 
+# To create new signals
+from controller.signals import *
+
 class MainWindow(QMainWindow):
 	"""docstring for MainWindow"""
 	def __init__(self, controller, *args, **kwargs):
@@ -15,22 +18,24 @@ class MainWindow(QMainWindow):
 		self.setWindowIcon(QIcon("./res/photo-album.ico"))
 		self.setWindowTitle("Photo Viewer")
 		self.settings = QSettings("James", "Photo Viewer")
-		# self.resize(800, 600)
+
 		self.controller = controller
-		self.loadSettings()
+		self.signals = controller.signals
 
-		self.imagelabel = ImageLabel()
-
-		self.zoom = ZoomCanvas(self.imagelabel)
-		self.setCentralWidget(self.zoom)
+		# Setup signals before label and zoom are created
+		self.setupSignals()
 		self.setupToolBar()
 
-		# self.zoom.fitImageSignal.signal.connect(self.setFitWindowState)
-		self.zoom.fitImageSignal.signal.connect(
-			lambda b: self.act_fitWindow.setChecked(b)
-			)
+		self.loadSettings()
 
-		self.zoom.updateTitleSignal.signal.connect(lambda e: self.updateWindowTitle())
+		# create imagelabel
+		self.imagelabel = ImageLabel()
+
+		# create zoom canvas
+		self.zoom = ZoomCanvas(self.imagelabel, self.controller)
+		self.setCentralWidget(self.zoom)
+
+
 
 	def setupToolBar(self):
 		self.toolbar = QToolBar("Main Toolbar")
@@ -91,6 +96,17 @@ class MainWindow(QMainWindow):
 		self.act_reverseSort.setChecked(self.controller.getFolderSort()[1] or False)
 		self.toolbar.addAction(self.act_reverseSort)
 
+	def setupSignals(self):
+		self.signals.updateTitleSignal = BoolSignal()
+		self.signals.updateTitleSignal.signal.connect(
+			lambda e: self.updateWindowTitle()
+		)
+
+		self.signals.fitImageSignal = BoolSignal()
+		self.signals.fitImageSignal.signal.connect(
+			lambda b: self.act_fitWindow.setChecked(b)
+		)
+
 	# Opens a "open file" dialog, then passes on to self.openImage
 	def openImageDialog(self, s):
 		print("Toolbar: Open image")
@@ -142,22 +158,6 @@ class MainWindow(QMainWindow):
 			self.act_fitWindow.setChecked(True)
 		elif not self.zoom.fitImage:
 			self.act_fitWindow.setChecked(False)
-
-	# Useless, replaced with controller.setFolderSort
-	# def setSort(self, sort, reverse=False):
-	# 	print(f"setSort: Set sort mode to \"{sort}\"")
-	# 	self.memory.sort = sort
-	# 	if self.memory.image:
-	# 		controller.io.createTempImageList(self.memory)
-
-	# Useless, replaced with controller.setFolderSort
-	# def setSortReverse(self):
-	# 	self.memory.sortReverse = not self.memory.sortReverse
-	# 	self.zoom.updateTitleSignal.signal.emit(True)
-
-	# Replaced with act_fitWindow.setChecked
-	# def setFitWindowState(self, boolean):
-	# 	self.act_fitWindow.setChecked(boolean)
 
 	# Updates title to match viewer information
 	# path must be a Path object

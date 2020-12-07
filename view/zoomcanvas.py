@@ -18,27 +18,20 @@ from PySide2.QtWidgets import QScrollArea, QLabel
 from PySide2.QtCore import QPointF, QSize, Signal, QObject
 from PySide2.QtGui import QPalette, Qt, QPixmap, QCursor,QImage
 
-# just Signal(bool) doesn't work
-# instead, use this.
-# You'll need to do 
-#   variable.signal.emit(True) 
-# instead of 
-#   variable.emit(True)
-class SignalFix(QObject):
+
+class BoolSignal(QObject):
 	signal = Signal(bool)
 
-class ZoomCanvas(QScrollArea):
-	def __init__(self, content, *args, **kwargs):
-		super(ZoomCanvas, self).__init__(*args, **kwargs)
 
-		self.fitImageSignal = SignalFix()
-		self.updateTitleSignal = SignalFix()
+class ZoomCanvas(QScrollArea):
+	def __init__(self, content, controller, *args, **kwargs):
+		super(ZoomCanvas, self).__init__(*args, **kwargs)
+		self.controller = controller
+		self.signals = controller.signals
 
 		self.zoomLevel = 1.0
 		self.drag = None
-		# self.fitImage = True
 		self.setFitImage(True)
-
 
 		self.setBackgroundRole(QPalette.Dark)
 
@@ -121,12 +114,12 @@ class ZoomCanvas(QScrollArea):
 	def resizeContentToZoomLevel(self):
 		dimension = self.zoomLevel * self.content.originalSize
 		self.content.qsizeResize(dimension)
-		self.updateTitleSignal.signal.emit(True)
+		self.signals.updateTitleSignal.signal.emit(True)
 
 	def setFitImage(self, state):
 		assert type(state) == bool
 		self.fitImage = state
-		self.fitImageSignal.signal.emit(state)
+		self.signals.fitImageSignal.signal.emit(state)
 
 	# ===================== Useful Functions =====================
 	def setScrollPosition(self, x, y):
