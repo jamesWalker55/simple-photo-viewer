@@ -33,6 +33,7 @@ class ZoomCanvas(QScrollArea):
 		super(ZoomCanvas, self).__init__(*args, **kwargs)
 
 		self.fitImageSignal = SignalFix()
+		self.updateTitleSignal = SignalFix()
 
 		self.zoomLevel = 1.0
 		self.drag = None
@@ -121,6 +122,7 @@ class ZoomCanvas(QScrollArea):
 	def resizeContentToZoomLevel(self):
 		dimension = self.zoomLevel * self.content.originalSize
 		self.content.qsizeResize(dimension)
+		self.updateTitleSignal.signal.emit(True)
 
 	def setFitImage(self, state):
 		assert type(state) == bool

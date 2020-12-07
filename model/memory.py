@@ -4,7 +4,7 @@ class MainMemory:
 	def __init__(self):
 		self._image = None
 		# Allowed sorts: name, cdate, mdate, size, random
-		self.sort = "random"
+		self.sort = "name"
 		# Allowed state: True, False
 		self.sortReverse = False
 		self.tempimagelist = None
