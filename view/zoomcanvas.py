@@ -213,12 +213,12 @@ class ZoomCanvas(QScrollArea):
 
 		super().resizeEvent(e)
 
-	# Define shortcuts
-	def keyPressEvent(self, e):
-		if e.key() == Qt.Key_E:
-			print(self.fitImage)
-		# if e.key() == Qt.Key_Q:
-		# 	self.toggleZoomFit()
+	# # Define shortcuts
+	# def keyPressEvent(self, e):
+	# 	if e.key() == Qt.Key_E:
+	# 		print(self.fitImage)
+	# 	if e.key() == Qt.Key_Q:
+	# 		self.toggleZoomFit()
 
-		super(ZoomCanvas, self).keyPressEvent(e)
+	# 	super(ZoomCanvas, self).keyPressEvent(e)
 

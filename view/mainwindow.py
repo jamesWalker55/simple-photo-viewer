@@ -1,6 +1,3 @@
-# from PySide2.QtCore import QSettings, QSize
-# from PySide2.QtGui import QPalette, QIcon
-# from PySide2.QtWidgets import QMainWindow, QAction, QToolBar, QMenu, QToolButton, QFileDialog
 from PySide2.QtCore import *
 from PySide2.QtGui import *
 from PySide2.QtWidgets import *
@@ -16,7 +13,7 @@ from view.zoomcanvas import ZoomCanvas
 from controller.signals import *
 
 class MainWindow(QMainWindow):
-	"""docstring for MainWindow"""
+	
 	def __init__(self, controller, *args, **kwargs):
 		super(MainWindow, self).__init__(*args, **kwargs)
 		self.setWindowIcon(QIcon("./res/photo-album.ico"))
